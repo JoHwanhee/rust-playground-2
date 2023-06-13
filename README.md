@@ -299,3 +299,92 @@ fn change(some_string: &mut String) {
     1. 하나의 가변 참조자
     1. 임의 개수의 불변 참조자들
 1. 참조자는 항상 유효해야만 한다.
+
+
+### 스트링 슬라이스
+
+스트링 슬라이스는 String의 일부분에 대한 참조자고, 아래와 같이 생겼습니다:
+
+```rust
+let s = String::from("hello world");
+
+let hello = &s[0..5];
+let world = &s[6..11];
+```
+![img_3.png](img_3.png)
+
+스트링 리터럴은 슬라이스입니다
+스트링 리터럴이 바이너리 안에 저장된다고 하는 얘기를 상기해봅시다. 이제 슬라이스에 대해 알았으니, 우리는 스트링 리터럴을 적합하게 이해할 수 있습니다:
+
+### 구조체
+
+```rust
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+let user1 = User {
+   email: String::from("someone@example.com"),
+   username: String::from("someusername123"),
+   active: true,
+   sign_in_count: 1,
+};
+
+let user2 = User {
+   email: String::from("another@example.com"),
+   username: String::from("anotherusername567"),
+   ..user1
+};
+
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+let black = Color(0, 0, 0);
+let origin = Point(0, 0, 0);
+
+```
+
+
+### 메소드
+
+```rust
+#[derive(Debug)]
+struct Rectangle {
+    length: u32,
+    width: u32,
+}
+
+impl Rectangle {
+    // 자기것을 참조하기 위해서 self 를 참조자 형태로 넘긴다. 값으로 넘기면 사라지기 때문~
+    fn area(&self) -> u32 {
+        self.length * self.width
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle { length: 50, width: 30 };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()
+    );
+}
+```
+
+Rust 에서는 c 랑 다르게, 참조/역참조를 자동으로 해준다!! 그래서 그냥 . 으로 찍으면 다 됨 
+
+
+### 연관함수
+
+impl 에 self 키워드 빼고 만들 수 있다~ 이름이 함수인 이유는.. self 참조할 일이 없으니 당연히 메소드가 아니라 함수겠지? 주로 생성자등에 쓰인다고 한다. 
+
+```rust
+impl Rectangle {
+    fn square(size: u32) -> Rectangle {
+        Rectangle { length: size, width: size }
+    }
+}
+```

@@ -46,10 +46,16 @@ fn main() {
         println!("the value is: {}", element);
     }
 
-    let s = String::from("hello");
-    s.len();
-    s.push_str("aa");
-    println!("{}", s);
+    // let s = String::from("hello");
+    // s.len();
+    // s.push_str("aa");
+    // println!("{}", s);
+
+    let s = String::from("abcd e");
+    let len = first_word(&s);
+
+    println!("{}", len);
+
 }
 
 fn func2() {
@@ -58,4 +64,16 @@ fn func2() {
 
 fn five() -> i32 {
     5
+}
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i
+        }
+    }
+
+    s.len()
 }

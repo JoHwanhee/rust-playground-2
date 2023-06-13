@@ -18,6 +18,8 @@ fn main() {
         10
     };
 
+    // 이것은 주석
+
     println!("The value of y is: {}", y);
     println!("The value of y is: {}", five());
 }

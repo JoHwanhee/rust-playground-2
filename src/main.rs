@@ -22,6 +22,34 @@ fn main() {
 
     println!("The value of y is: {}", y);
     println!("The value of y is: {}", five());
+
+    if x == 1 {
+        // println!('a');
+    }
+    else {
+        println!("aa");
+    }
+
+    let c = if x == 1 {
+        10
+    }
+    else {
+        55
+    };
+
+    println!("{}", c);
+
+
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a.iter() {
+        println!("the value is: {}", element);
+    }
+
+    let s = String::from("hello");
+    s.len();
+    s.push_str("aa");
+    println!("{}", s);
 }
 
 fn func2() {

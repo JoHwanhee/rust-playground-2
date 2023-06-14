@@ -1,6 +1,23 @@
-# RUST playground
+# rust playground
 
-러스트 랭기지 공부하는 레포지토리 입니다.
+[러스트 공식문서](https://rinthel.github.io/rust-lang-book-ko/foreword.html)를 기반으로하는, 러스트 랭기지 학습 레포지토리 입니다.
+
+* [How to install the rust ?](#how-to-install-the-rust-)
+* [Hello world!](#hello-world)
+* [Package manager](#package-manager)
+* [IDE](#ide)
+* [변수 구문 표현식](#변수-구문-표현식)
+* [제어문](#제어문)
+* [소유권](#소유권)
+* [스택과 힙](#스택과-힙)
+* [소유권 규칙](#소유권-규칙)
+* [댕글링 포인터](#댕글링-포인터)
+* [참조자 규칙](#참조자-규칙)
+* [스트링 슬라이스](#스트링-슬라이스)
+* [구조체](#구조체)
+* [메소드](#메소드)
+* [연관함수](#연관함수)
+
 
 ### How to install the rust ?
 
@@ -388,3 +405,92 @@ impl Rectangle {
     }
 }
 ```
+
+### 열거형
+
+언제 열거형이 구조체보다 유용할까? 일단 기본 문법들부터 보자. 다음과 같이 쓴다. 
+
+```rust
+enum IpAddrKind {
+    V4,
+    V6,
+}
+```
+
+```rust
+let four = IpAddrKind::V4;
+let six = IpAddrKind::V6;
+```
+
+```rust
+enum IpAddr {
+    V4(u8, u8, u8, u8),
+    V6(String),
+}
+
+let home = IpAddr::V4(127, 0, 0, 1);
+
+let loopback = IpAddr::V6(String::from("::1"));
+```
+
+그럼 진짜 언제 열거형을 쓸까? 
+1. 다양한 타입을 포함한 하나의 타입을 정의하고 싶을 때: Rust의 열거형은 각각의 variant가 다른 타입의 값을 가질 수 있다. 이는 여러 가지 상태나 타입을 한 타입으로 표현할 때 유용하다.
+
+```rust
+enum Option<T> {
+    Some(T),
+    None,
+}
+```
+
+2. 패턴 매칭을 활용하고 싶을 때: 러스트 열거형이랑 패턴 매치가 좋다.
+
+```rust
+match some_option_value {
+    Some(value) => println!("Got a value: {}", value),
+    None => println!("Got no value"),
+}
+```
+
+구조체는 진짜 말 그대로, 한 도메인의 속성들을 묶을 때 쓴다. ipV4 ipV6은 ip 의 속성이 아닌 것 처럼..
+
+그리고 열거형으로 이런 재밌는 코드들도 할 수 있다. 이건 약간 swift 에 let 문법과 비슷?
+
+```rust
+let some_u8_value = Some(0u8);
+match some_u8_value {
+    Some(3) => println!("three"),
+    _ => (),
+}
+
+if let Some(3) = some_u8_value {
+    println!("three");
+}
+```
+
+### 모듈
+
+```shell
+cargo new communicator --lib
+```
+
+이러면 요런 코드가짜란 하고 나온다.
+
+```rust
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
+}
+```
+
+러스트 내 모듈 정의는 모두 mod로 시작됩니다. 이 코드를 src/lib.rs의 시작 부분, 즉 테스트 코드의 윗 쪽에 추가해봅시다:

@@ -1,3 +1,5 @@
+use std::fs::File;
+
 const MAX_POINTS: u64 = 100_000;
 
 
@@ -56,6 +58,15 @@ fn main() {
 
     println!("{}", len);
 
+
+    // let f = read();
+    //
+
+    let num = largest(vec![1,33, 2,3, 4, 1123]);
+    match num {
+        Some(max) => println!("{}", max),
+        None => println!("No numbers in the vector!"),
+    }
 }
 
 fn func2() {
@@ -76,4 +87,32 @@ fn first_word(s: &String) -> usize {
     }
 
     s.len()
+}
+
+fn read() -> File {
+    let f = File::open("hello.txt");
+
+    let f = match f {
+        Ok(file) => file,
+        Err(error) => {
+            panic!("There was a problem opening the file: {:?}", error)
+        },
+    };
+
+    return f
+}
+
+fn largest(nums: Vec<u32>) -> Option<u32> {
+    if nums.is_empty() {
+        return None;
+    }
+
+    let mut the_largest = nums[0];
+    for &num in &nums[1..] {
+        if num > the_largest {
+            the_largest = num;
+        }
+    }
+
+    Some(the_largest)
 }

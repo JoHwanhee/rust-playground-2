@@ -17,6 +17,12 @@
 * [구조체](#구조체)
 * [메소드](#메소드)
 * [연관함수](#연관함수)
+* [열거형](#열거형)
+* [코딩해보자!](#코딩해보자)
+* [모듈](#모듈)
+* [트레잇](#트레잇)
+* [라이프 타임](#라이프-타임)
+
 
 
 ### How to install the rust ?
@@ -468,13 +474,39 @@ if let Some(3) = some_u8_value {
 }
 ```
 
+### 코딩해보자!
+
+가장 큰 수 찾기 
+```rust
+fn largest(nums: Vec<u32>) -> Option<u32> {
+    if nums.is_empty() {
+        return None;
+    }
+
+    let mut the_largest = nums[0];
+    for &num in &nums[1..] {
+        if num > the_largest {
+            the_largest = num;
+        }
+    }
+
+    Some(the_largest)
+}
+
+let num = largest(vec![1,33, 2,3, 4, 1123]);
+match num {
+   Some(max) => println!("{}", max),
+   None => println!("No numbers in the vector!"),
+}
+```
+
 ### 모듈
 
 ```shell
 cargo new communicator --lib
 ```
 
-이러면 요런 코드가짜란 하고 나온다.
+이러면 요런 코드가 짜란 하고 나온다. 근데 정확히 어떻게 더 패키징하고 폴더링하는지는 실제 실무해보면서 습득하는 걸로..
 
 ```rust
 pub fn add(left: usize, right: usize) -> usize {
@@ -493,4 +525,59 @@ mod tests {
 }
 ```
 
-러스트 내 모듈 정의는 모두 mod로 시작됩니다. 이 코드를 src/lib.rs의 시작 부분, 즉 테스트 코드의 윗 쪽에 추가해봅시다:
+### 트레잇
+
+인터페이스랑 비슷한거라고 한다.. 그래서 impl 키워드로 잡으면 되나보다? 요것도 필요한 상황들이 되어보면 그 떄 좀 더 학습해보면 될 듯하다.
+ 
+```rust
+pub trait Summarizable {
+   fn summary(&self) -> String;
+}
+
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summarizable for NewsArticle {
+    fn summary(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summarizable for Tweet {
+    fn summary(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+```
+
+
+### 라이프 타임
+
+참조자들 관리하려고 나온개념이다. 더 정확한 주 목적은 댕글링 포인터 잡아내려고, 
+
+이런거 안 됨 - 다른 스콥에 있는걸 참조자가 참조하려고 해서
+```rust
+{
+    let r;
+
+    {
+        let x = 5;
+        r = &x;
+    }
+
+    println!("r: {}", r);
+}
+
+```
